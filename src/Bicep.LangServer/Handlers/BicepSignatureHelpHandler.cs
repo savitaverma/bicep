@@ -137,8 +137,8 @@ namespace Bicep.LanguageServer.Handlers
         private static SignatureHelpRegistrationOptions CreateRegistrationOptions() => new SignatureHelpRegistrationOptions
         {
             DocumentSelector = DocumentSelectorFactory.Create(),
-            TriggerCharacters = new Container<string>("("),
-            RetriggerCharacters = new Container<string>(",")
+            TriggerCharacters = new Container<string>("(", ","),
+            RetriggerCharacters = new Container<string>()
         };
     }
 }
