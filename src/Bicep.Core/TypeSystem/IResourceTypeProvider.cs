@@ -8,10 +8,10 @@ namespace Bicep.Core.TypeSystem
 {
     public interface IResourceTypeProvider
     {
-        ResourceType GetType(ResourceTypeReference reference);
+        ResourceType GetType(ResourceScope scopeType, ResourceTypeReference reference);
 
-        bool HasType(ResourceTypeReference typeReference);
+        bool HasType(ResourceScope scopeType, ResourceTypeReference typeReference);
 
-        IEnumerable<ResourceTypeReference> GetAvailableTypes();
+        IEnumerable<ResourceTypeReference> GetAvailableTypes(ResourceScope scopeType);
     }
 }

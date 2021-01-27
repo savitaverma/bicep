@@ -82,6 +82,7 @@
     "anyIndexOnAny": "[true()[false()]]",
     "deploymentName": "[deployment().name]",
     "templateLinkUri": "[deployment().properties.templateLink.uri]",
+    "templateLinkId": "[deployment().properties.templateLink.id]",
     "portalEndpoint": "[environment().portal]",
     "loginEndpoint": "[environment().authentication.loginEndpoint]",
     "firstLocation": "[environment().locations[0].displayName]",
@@ -163,7 +164,9 @@
       "tenant": "[createObject()]",
       "subscription": "[createObject()]",
       "resourceGroup": "[createObject()]"
-    }
+    },
+    "issue1332_propname": "ptest",
+    "issue1332": "[if(true(), createObject('prop1', createObject(variables('issue1332_propname'), createObject())), createObject())]"
   },
   "resources": []
 }

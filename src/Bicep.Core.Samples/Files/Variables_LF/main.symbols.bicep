@@ -115,6 +115,8 @@ var deploymentName = deployment().name
 //@[4:18) Variable deploymentName. Type: string. Declaration start char: 0, length: 38
 var templateLinkUri = deployment().properties.templateLink.uri
 //@[4:19) Variable templateLinkUri. Type: string. Declaration start char: 0, length: 62
+var templateLinkId = deployment().properties.templateLink.id
+//@[4:18) Variable templateLinkId. Type: string. Declaration start char: 0, length: 60
 
 var portalEndpoint = environment().portal
 //@[4:18) Variable portalEndpoint. Type: string. Declaration start char: 0, length: 41
@@ -309,3 +311,13 @@ var scopesWithoutArmRepresentation = {
   subscription: subscription('10b57a01-6350-4ce2-972a-6a13642f00bf')
   resourceGroup: az.resourceGroup('10b57a01-6350-4ce2-972a-6a13642f00bf', 'myRgName')
 }
+
+// Issue #1332
+var issue1332_propname = 'ptest'
+//@[4:22) Variable issue1332_propname. Type: 'ptest'. Declaration start char: 0, length: 32
+var issue1332 = true ? {
+//@[4:13) Variable issue1332. Type: object | object. Declaration start char: 0, length: 86
+    prop1: {
+        '${issue1332_propname}': {}
+    }
+} : {}

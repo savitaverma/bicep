@@ -247,6 +247,27 @@ var takeTooMany = take([
 //@[22:35) [BCP071 (Error)] Expected 2 arguments, but got 4. |([\n],1,2,'s')|
 ],1,2,'s')
 
+// missing arguments
+var trailingArgumentComma = format('s',)
+//@[39:39) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+var onlyArgumentComma = concat(,)
+//@[31:31) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[32:32) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+var multipleArgumentCommas = concat(,,,,,)
+//@[36:36) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[37:37) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[38:38) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[39:39) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[40:40) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[41:41) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+var emptyArgInBetween = concat(true,,false)
+//@[36:36) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+var leadingEmptyArg = concat(,[])
+//@[29:29) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+var leadingAndTrailingEmptyArg = concat(,'s',)
+//@[40:40) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+//@[45:45) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. ||
+
 // wrong argument types
 var concatWrongTypes = concat({
 //@[30:33) [BCP048 (Error)] Cannot resolve function overload.\n  Overload 1 of 2, "(... : array): array", gave the following error:\n    Argument of type "object" is not assignable to parameter of type "array".\n  Overload 2 of 2, "(... : bool | int | string): string", gave the following error:\n    Argument of type "object" is not assignable to parameter of type "bool | int | string". |{\n}|
@@ -359,6 +380,10 @@ var azFunctions = az.a
 var sysFunctions = sys.a
 //@[23:24) [BCP052 (Error)] The type "sys" does not contain property "a". |a|
 
+// #completionTest(33) -> sysFunctions
+var sysFunctionsInParens = (sys.a)
+//@[32:33) [BCP052 (Error)] The type "sys" does not contain property "a". |a|
+
 // missing method name
 var missingMethodName = az.()
 //@[27:27) [BCP020 (Error)] Expected a function or property name at this location. ||
@@ -375,6 +400,10 @@ var missingIndexerOnIdentifier = nonExistentIdentifier[][1][]
 // empty parens - should produce expected expression diagnostic
 var emptyParens = ()
 //@[19:20) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. |)|
+
+// #completionTest(26) -> symbols
+var anotherEmptyParens = ()
+//@[26:27) [BCP009 (Error)] Expected a literal value, an array, an object, a parenthesized expression, or a function call at this location. |)|
 
 // keywords can't be called like functions
 var nullness = null()

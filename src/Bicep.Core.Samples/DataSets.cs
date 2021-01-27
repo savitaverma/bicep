@@ -42,11 +42,23 @@ namespace Bicep.Core.Samples
 
         public static DataSet Variables_LF => CreateDataSet();
 
+        public static DataSet VariablesTenant_LF => CreateDataSet();
+
+        public static DataSet VariablesSubscription_LF => CreateDataSet();
+
+        public static DataSet VariablesManagementGroup_LF => CreateDataSet();
+
         public static DataSet Modules_CRLF => CreateDataSet();
 
         public static DataSet ModulesWithScopes_LF => CreateDataSet();
 
-        public static DataSet InvalidModules_LF => CreateDataSet(); 
+        public static DataSet InvalidModules_LF => CreateDataSet();
+
+        public static DataSet InvalidModulesTenant_LF => CreateDataSet();
+
+        public static DataSet InvalidModulesManagementGroup_LF => CreateDataSet();
+
+        public static DataSet InvalidModulesSubscription_LF => CreateDataSet();
 
         public static IEnumerable<DataSet> AllDataSets =>
             typeof(DataSets)

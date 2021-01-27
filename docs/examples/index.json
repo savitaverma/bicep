@@ -36,8 +36,16 @@
         "description": "101/application-gateway-v2-autoscale-create"
     },
     {
+        "filePath": "101/azure-automation-account/main.bicep",
+        "description": "101/azure-automation-account"
+    },
+    {
         "filePath": "101/azure-bastion/main.bicep",
         "description": "101/azure-bastion"
+    },
+    {
+        "filePath": "101/basic-batch-account/main.bicep",
+        "description": "101/basic-batch-account"
     },
     {
         "filePath": "101/azure-search-create/main.bicep",
@@ -54,6 +62,10 @@
     {
         "filePath": "101/azurefirewall-create-with-zones/main.bicep",
         "description": "101/azurefirewall-create-with-zones"
+    },
+    {
+        "filePath": "101/create-managedidentity-rbac/main.bicep",
+        "description": "101/create-managedidentity-rbac"
     },
     {
         "filePath": "101/basic-publicip/main.bicep",
@@ -120,6 +132,10 @@
         "description": "101/deployment-script-with-storage"
     },
     {
+        "filePath": "101/event-grid-servicebus-queue/main.bicep",
+        "description": "101/event-grid-servicebus-queue"
+    },
+    {
         "filePath": "101/eventhub-namespace/main.bicep",
         "description": "101/eventhub-namespace"
     },
@@ -168,6 +184,10 @@
         "description": "101/logic-app-create"
     },
     {
+        "filePath": "101/media-services-create/main.bicep",
+        "description": "101/media-services-create"
+    },
+    {
         "filePath": "101/mg-policy/main.bicep",
         "description": "101/mg-policy"
     },
@@ -184,6 +204,10 @@
         "description": "101/private-dns-zone"
     },
     {
+        "filePath": "101/private-endpoint-webapp/main.bicep",
+        "description": "101/private-endpoint-webapp"
+    },
+    {
         "filePath": "101/redis-cache/main.bicep",
         "description": "101/redis-cache"
     },
@@ -196,8 +220,16 @@
         "description": "101/sql-database"
     },
     {
+        "filePath": "101/sqlmi-new-vnet/main.bicep",
+        "description": "101/sqlmi-new-vnet"
+    },
+    {
         "filePath": "101/storage-blob-container/main.bicep",
         "description": "101/storage-blob-container"
+    },
+    {
+        "filePath": "101/templatespec-create/main.bicep",
+        "description": "101/templatespec-create"
     },
     {
         "filePath": "101/vm-simple-linux/main.bicep",
@@ -218,6 +250,10 @@
     {
         "filePath": "101/web-app-windows/main.bicep",
         "description": "101/web-app-windows"
+    },
+    {
+        "filePath": "101/webapp-managed-mysql/main.bicep",
+        "description": "101/webapp-managed-mysql"
     },
     {
         "filePath": "101/webapp-privateendpoint-vnet-injection/main.bicep",
@@ -252,12 +288,20 @@
         "description": "201/api-management-create-all-resources"
     },
     {
+        "filePath": "201/asev2-ilb-with-web-app/main.bicep",
+        "description": "201/asev2-ilb-with-web-app"
+    },
+    {
         "filePath": "201/cdn-with-storage-account/main.bicep",
         "description": "201/cdn-with-storage-account"
     },
     {
         "filePath": "201/cloud-shell-vnet/main.bicep",
         "description": "201/cloud-shell-vnet"
+    },
+    {
+        "filePath": "201/create-and-enable-ddos-protection-plans/main.bicep",
+        "description": "201/create-and-enable-ddos-protection-plans"
     },
     {
         "filePath": "201/cyclecloud/main.bicep",
@@ -344,12 +388,20 @@
         "description": "201/vnet-to-vnet-bgp"
     },
     {
+        "filePath": "201/vnet-to-vnet-peering/main.bicep",
+        "description": "201/vnet-to-vnet-peering"
+    },
+    {
         "filePath": "201/vwan-shared-services/main.bicep",
         "description": "201/vwan-shared-services"
     },
     {
         "filePath": "201/web-app-loganalytics/main.bicep",
         "description": "201/web-app-loganalytics"
+    },
+    {
+        "filePath": "201/web-app-asev2-create/main.bicep",
+        "description": "201/web-app-asev2-create"
     },
     {
         "filePath": "201/web-app-conditional-log/main.bicep",
@@ -368,8 +420,24 @@
         "description": "201/wvd-backplane-with-network-and-storage-and-monitoring"
     },
     {
+        "filePath": "201/vm-windows10-with-nvidia-gpu-extension-and-condition/main.bicep",
+        "description": "201/vm-windows10-with-nvidia-gpu-extension-and-condition"
+    },
+    {
+        "filePath": "201/shared-image-gallery-with-image-defintition-and-role-assignment/main.bicep",
+        "description": "201/shared-image-gallery-with-image-defintition-and-role-assignment"
+    },
+    {
+        "filePath": "301/expressroute-circuit-vnet-connection/main.bicep",
+        "description": "301/expressroute-circuit-vnet-connection"
+    },
+    {
         "filePath": "301/function-app-with-custom-domain-managed-certificate/main.bicep",
         "description": "301/function-app-with-custom-domain-managed-certificate"
+    },
+    {
+        "filePath": "301/insights-alertrules-application-insights/main.bicep",
+        "description": "301/insights-alertrules-application-insights"
     },
     {
         "filePath": "301/modules-vwan-to-vnet-s2s-with-fw/main.bicep",

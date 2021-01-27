@@ -65,6 +65,8 @@ az deployment group create -f ./main.json -g my-rg
 * Automatic dependency management in certain scenarios. Bicep will automatically add `dependsOn` in the compiled ARM Template if the symbolic name is used in another resource declaration.
 * Richer validation and intellisense than what is available in the ARM Tools VS Code extension. For example, in bicep we have intellisense on GET properties (`output sample string = resource.properties.*`)
 
+For more detail on taking advantage of new bicep constructs that replace an equivalent from ARM Templates, you can read the [moving from ARM => Bicep](./docs/arm2bicep.md) doc.
+
 ## Known limitations
 
 * No support for the `copy` property ([#185](https://github.com/Azure/bicep/issues/185)).
@@ -85,7 +87,7 @@ That being said, there is a huge customer base using ARM templates today because
 Fundamentally, we believe that configuration languages and tools are always going to be polyglot and different users will prefer different tools for different situations. We want to make sure all of these tools are great on Azure, Bicep is only a part of that effort.
 
 **Is this ready for production use? If not, when will it be ready?**
-Not yet. We wanted to get the 0.1 release out quickly and get feedback while we still have an opportunity to make breaking changes. By the end of the year, we plan to ship an 0.3 release which will be at parity with what you can accomplish with ARM templates. At that point, we will start recommending production usage.
+Not yet. We wanted to get the 0.1 release out quickly and get feedback while we still have an opportunity to make breaking changes. In early 2021, we plan to ship an 0.3 release which will be at parity with what you can accomplish with ARM templates. At that point, we will start recommending production usage and customer support will be trained on bicep.
 
 **What are you looking for feedback on?**
 The language syntax and the tooling. Now is the best time to make breaking changes, so syntax feedback is very appreciated.
@@ -103,6 +105,12 @@ Note that while we want to make it easy to transition to Bicep, we will continue
 * [Complete language spec](./docs/spec/bicep.md)
 * [@BicepLang](https://twitter.com/BicepLang)
 * [ARM Template Reference](https://docs.microsoft.com/azure/templates/)
+
+## Community Bicep projects
+
+* [Bicep GitHub Action](https://github.com/marketplace/actions/bicep-build)
+* [Bicep Language Service support in Neovim](https://github.com/Azure/bicep/issues/1141#issuecomment-749372637)
+* [Bicep PowerShell Module](https://github.com/StefanIvemo/BicepPowerShell)
 
 ## Alternatives
 

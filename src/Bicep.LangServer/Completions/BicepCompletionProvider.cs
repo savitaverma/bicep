@@ -161,7 +161,7 @@ namespace Bicep.LanguageServer.Completions
 
             // we need to ensure that Microsoft.Compute/virtualMachines@whatever comes before Microsoft.Compute/virtualMachines/extensions@whatever
             // similarly, newest api versions should be shown first
-            return model.Compilation.ResourceTypeProvider.GetAvailableTypes()
+            return model.Compilation.ResourceTypeProvider.GetAvailableTypes(model.TargetScope)
                 .OrderBy(rt => rt.FullyQualifiedType, StringComparer.OrdinalIgnoreCase)
                 .ThenByDescending(rt => rt.ApiVersion)
                 .Select((reference, index) => CreateResourceTypeCompletion(reference, index, context.ReplacementRange))
@@ -538,6 +538,12 @@ namespace Bicep.LanguageServer.Completions
                 var snippet = hasParameters
                     ? $"{insertText}($0)"
                     : $"{insertText}()$0";
+
+                if (hasParameters)
+                {
+                    // if parameters may need to be specified, automatically request signature help
+                    completion.WithCommand(new Command {Name = EditorCommands.SignatureHelp});
+                }
 
                 return completion
                     .WithDetail($"{insertText}()")

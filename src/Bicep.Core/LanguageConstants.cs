@@ -32,7 +32,7 @@ namespace Bicep.Core
         public const string TargetScopeTypeSubscription = "subscription";
         public const string TargetScopeTypeResourceGroup = "resourceGroup";
 
-        public static ImmutableSortedSet<string> DeclarationKeywords = new[] {ParameterKeyword, VariableKeyword, ResourceKeyword, OutputKeyword, ModuleKeyword}.ToImmutableSortedSet(StringComparer.Ordinal);
+        public static ImmutableSortedSet<string> DeclarationKeywords = new[] { ParameterKeyword, VariableKeyword, ResourceKeyword, OutputKeyword, ModuleKeyword }.ToImmutableSortedSet(StringComparer.Ordinal);
 
         public static ImmutableSortedSet<string> ContextualKeywords = DeclarationKeywords
             .Add(TargetScopeKeyword)
@@ -55,7 +55,10 @@ namespace Bicep.Core
         public const string ModuleParamsPropertyName = "params";
         public const string ModuleOutputsPropertyName = "outputs";
 
+        public const string ResourceIdPropertyName = "id";
         public const string ResourceNamePropertyName = "name";
+        public const string ResourceTypePropertyName = "type";
+        public const string ResourceApiVersionPropertyName = "apiVersion";
         public const string ResourceScopePropertyName = "scope";
         public const string ResourceDependsOnPropertyName = "dependsOn";
 
@@ -67,7 +70,7 @@ namespace Bicep.Core
         public const string StringHoleClose = "}";
 
         public static readonly TypeSymbol Any = new AnyType();
-        public static readonly TypeSymbol ResourceRef = new ResourceScopeReference("resource | module", ResourceScopeType.ModuleScope | ResourceScopeType.ResourceScope);
+        public static readonly TypeSymbol ResourceRef = new ResourceReferenceType("resource | module", ResourceScope.Module | ResourceScope.Resource);
         public static readonly TypeSymbol String = new PrimitiveType("string", TypeSymbolValidationFlags.Default);
         // LooseString should be regarded as equal to the 'string' type, but with different validation behavior
         public static readonly TypeSymbol LooseString = new PrimitiveType("string", TypeSymbolValidationFlags.AllowLooseStringAssignment);
@@ -83,7 +86,7 @@ namespace Bicep.Core
         public static readonly TypeSymbol Tags = new NamedObjectType(nameof(Tags), TypeSymbolValidationFlags.Default, Enumerable.Empty<TypeProperty>(), String, TypePropertyFlags.None);
 
         // types allowed to use in output and parameter declarations
-        public static readonly ImmutableSortedDictionary<string, TypeSymbol> DeclarationTypes = new[] {String, Object, Int, Bool, Array}.ToImmutableSortedDictionary(type => type.Name, type => type, StringComparer.Ordinal);
+        public static readonly ImmutableSortedDictionary<string, TypeSymbol> DeclarationTypes = new[] { String, Object, Int, Bool, Array }.ToImmutableSortedDictionary(type => type.Name, type => type, StringComparer.Ordinal);
 
         public static TypeSymbol? TryGetDeclarationType(string? typeName)
         {
@@ -142,22 +145,23 @@ namespace Bicep.Core
 
         public static IEnumerable<TypeProperty> GetCommonResourceProperties(ResourceTypeReference reference)
         {
-            yield return new TypeProperty("id", String, TypePropertyFlags.ReadOnly | TypePropertyFlags.SkipInlining);
-            yield return new TypeProperty(ResourceNamePropertyName, String, TypePropertyFlags.Required | TypePropertyFlags.SkipInlining);
-            yield return new TypeProperty("type", new StringLiteralType(reference.FullyQualifiedType), TypePropertyFlags.ReadOnly | TypePropertyFlags.SkipInlining);
-            yield return new TypeProperty("apiVersion", new StringLiteralType(reference.ApiVersion), TypePropertyFlags.ReadOnly | TypePropertyFlags.SkipInlining);
+            yield return new TypeProperty(ResourceIdPropertyName, String, TypePropertyFlags.ReadOnly | TypePropertyFlags.DeployTimeConstant);
+            yield return new TypeProperty(ResourceNamePropertyName, String, TypePropertyFlags.Required | TypePropertyFlags.DeployTimeConstant);
+            yield return new TypeProperty(ResourceTypePropertyName, new StringLiteralType(reference.FullyQualifiedType), TypePropertyFlags.ReadOnly | TypePropertyFlags.DeployTimeConstant);
+            yield return new TypeProperty(ResourceApiVersionPropertyName, new StringLiteralType(reference.ApiVersion), TypePropertyFlags.ReadOnly | TypePropertyFlags.DeployTimeConstant);
         }
 
-        private static ResourceScopeReference CreateResourceScopeReference(ResourceScopeType resourceScope)
-            => resourceScope switch {
-                ResourceScopeType.TenantScope => new ResourceScopeReference("tenant", resourceScope),
-                ResourceScopeType.ManagementGroupScope => new ResourceScopeReference("managementGroup", resourceScope),
-                ResourceScopeType.SubscriptionScope => new ResourceScopeReference("subscription", resourceScope),
-                ResourceScopeType.ResourceGroupScope => new ResourceScopeReference("resourceGroup", resourceScope),
-                _ => new ResourceScopeReference("none", ResourceScopeType.None),
+        private static ResourceReferenceType CreateResourceScopeReference(ResourceScope resourceScope)
+            => resourceScope switch
+            {
+                ResourceScope.Tenant => new ResourceReferenceType("tenant", resourceScope),
+                ResourceScope.ManagementGroup => new ResourceReferenceType("managementGroup", resourceScope),
+                ResourceScope.Subscription => new ResourceReferenceType("subscription", resourceScope),
+                ResourceScope.ResourceGroup => new ResourceReferenceType("resourceGroup", resourceScope),
+                _ => new ResourceReferenceType("none", ResourceScope.None),
             };
 
-        public static TypeSymbol CreateModuleType(IEnumerable<TypeProperty> paramsProperties, IEnumerable<TypeProperty> outputProperties, ResourceScopeType moduleScope, ResourceScopeType containingScope, string typeName)
+        public static TypeSymbol CreateModuleType(IEnumerable<TypeProperty> paramsProperties, IEnumerable<TypeProperty> outputProperties, ResourceScope moduleScope, ResourceScope containingScope, string typeName)
         {
             var paramsType = new NamedObjectType(ModuleParamsPropertyName, TypeSymbolValidationFlags.Default, paramsProperties, null);
             // If none of the params are reqired, we can allow the 'params' declaration to be ommitted entirely
@@ -172,9 +176,9 @@ namespace Bicep.Core
             var moduleBody = new NamedObjectType(
                 typeName,
                 TypeSymbolValidationFlags.Default,
-                new []
+                new[]
                 {
-                    new TypeProperty(ResourceNamePropertyName, LanguageConstants.String, TypePropertyFlags.Required | TypePropertyFlags.SkipInlining),
+                    new TypeProperty(ResourceNamePropertyName, LanguageConstants.String, TypePropertyFlags.Required | TypePropertyFlags.DeployTimeConstant),
                     new TypeProperty(ResourceScopePropertyName, CreateResourceScopeReference(moduleScope), TypePropertyFlags.WriteOnly | scopeRequiredFlag),
                     new TypeProperty(ModuleParamsPropertyName, paramsType, paramsRequiredFlag | TypePropertyFlags.WriteOnly),
                     new TypeProperty(ModuleOutputsPropertyName, outputsType, TypePropertyFlags.ReadOnly),
@@ -232,8 +236,8 @@ namespace Bicep.Core
 
             var resourceRefArray = new TypedArrayType(ResourceRef, TypeSymbolValidationFlags.Default);
             yield return new TypeProperty(ResourceDependsOnPropertyName, resourceRefArray, TypePropertyFlags.WriteOnly);
-            
-            yield return new TypeProperty(ResourceScopePropertyName, new ResourceScopeReference("resource", ResourceScopeType.ResourceScope), TypePropertyFlags.WriteOnly);
+
+            yield return new TypeProperty(ResourceScopePropertyName, new ResourceReferenceType("resource", ResourceScope.Resource), TypePropertyFlags.WriteOnly);
         }
     }
 }
